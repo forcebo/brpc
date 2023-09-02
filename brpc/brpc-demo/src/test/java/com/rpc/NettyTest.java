@@ -96,7 +96,7 @@ public class NettyTest {
 
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         GZIPInputStream gzipInputStream = new GZIPInputStream(bais);
-        
+
         byte[] bytes1 = gzipInputStream.readAllBytes();
 
         System.out.println(bytes.length + "-->" + bytes1.length);
