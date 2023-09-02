@@ -8,11 +8,12 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-public class AppClient {
+public class AppClient implements Serializable {
     public void run() {
         NioEventLoopGroup group = new NioEventLoopGroup();
 

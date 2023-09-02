@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0375fdcc-9a7f-4793-91da-299c154a993f" name="Changes" comment="" />
+    <list default="true" id="0375fdcc-9a7f-4793-91da-299c154a993f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-demo/src/main/java/com/rpc/netty/AppClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-demo/src/main/java/com/rpc/netty/AppClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-demo/src/test/java/com/rpc/NettyTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-demo/src/test/java/com/rpc/NettyTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-demo/target/classes/com/rpc/netty/AppClient$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-demo/target/classes/com/rpc/netty/AppClient$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-demo/target/classes/com/rpc/netty/AppClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-demo/target/classes/com/rpc/netty/AppClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-demo/target/test-classes/com/rpc/NettyTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-demo/target/test-classes/com/rpc/NettyTest.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -48,7 +55,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
-  <component name="RunManager" selected="Application.AppClient">
+  <component name="RunManager" selected="JUnit.NettyTest.testCompress">
     <configuration name="AppClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.rpc.netty.AppClient" />
       <module name="brpc-demo" />
@@ -75,6 +82,38 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="NettyTest.testCompress" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="brpc-demo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.rpc.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.rpc" />
+      <option name="MAIN_CLASS_NAME" value="com.rpc.NettyTest" />
+      <option name="METHOD_NAME" value="testCompress" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="NettyTest.testMessage" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="brpc-demo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.rpc.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.rpc" />
+      <option name="MAIN_CLASS_NAME" value="com.rpc.NettyTest" />
+      <option name="METHOD_NAME" value="testMessage" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="lua.app" factoryName="Lua Application">
       <option name="program" value="lua.exe" />
       <option name="file" value="" />
@@ -87,6 +126,8 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.NettyTest.testCompress" />
+        <item itemvalue="JUnit.NettyTest.testMessage" />
         <item itemvalue="Application.AppClient" />
         <item itemvalue="Application.AppServer" />
       </list>
@@ -100,7 +141,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1693562682190</updated>
-      <workItem from="1693562682190" duration="10376000" />
+      <workItem from="1693562682190" duration="14348000" />
     </task>
     <servers />
   </component>
