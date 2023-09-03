@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0375fdcc-9a7f-4793-91da-299c154a993f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brpc-demo/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-demo/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-demo/src/test/java/com/rpc/ZookeeperTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-demo/src/test/java/com/rpc/ZookeeperTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-demo/target/test-classes/com/rpc/ZookeeperTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-demo/target/test-classes/com/rpc/ZookeeperTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,12 +60,12 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager" selected="JUnit.ZookeeperTest.testExistsPNode">
+  <component name="RunManager" selected="JUnit.ZookeeperTest.testWatcher">
     <configuration name="NettyTest.testCompress" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="brpc-demo" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.rpc.*" />
+          <option name="PATTERN" value="com.rpc.netty.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -77,27 +77,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="NettyTest.testMessage" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="brpc-demo" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.rpc.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.rpc" />
-      <option name="MAIN_CLASS_NAME" value="com.rpc.NettyTest" />
-      <option name="METHOD_NAME" value="testMessage" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ZookeeperTest.testCreatePNode" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="brpc-demo" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.rpc.*" />
+          <option name="PATTERN" value="com.rpc.netty.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -113,7 +97,7 @@
       <module name="brpc-demo" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.rpc.*" />
+          <option name="PATTERN" value="com.rpc.netty.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -129,13 +113,29 @@
       <module name="brpc-demo" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.rpc.*" />
+          <option name="PATTERN" value="com.rpc.netty.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.rpc" />
       <option name="MAIN_CLASS_NAME" value="com.rpc.ZookeeperTest" />
       <option name="METHOD_NAME" value="testExistsPNode" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ZookeeperTest.testWatcher" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="brpc-demo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.rpc.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.rpc" />
+      <option name="MAIN_CLASS_NAME" value="com.rpc.ZookeeperTest" />
+      <option name="METHOD_NAME" value="testWatcher" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -153,11 +153,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ZookeeperTest.testExistsPNode" />
+        <item itemvalue="JUnit.ZookeeperTest.testWatcher" />
         <item itemvalue="JUnit.ZookeeperTest.testCreatePNode" />
+        <item itemvalue="JUnit.ZookeeperTest.testExistsPNode" />
         <item itemvalue="JUnit.ZookeeperTest.testDeletePNode" />
         <item itemvalue="JUnit.NettyTest.testCompress" />
-        <item itemvalue="JUnit.NettyTest.testMessage" />
       </list>
     </recent_temporary>
   </component>
@@ -169,7 +169,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1693562682190</updated>
-      <workItem from="1693562682190" duration="16390000" />
+      <workItem from="1693562682190" duration="21037000" />
     </task>
     <servers />
   </component>
