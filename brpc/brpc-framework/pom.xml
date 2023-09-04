@@ -9,12 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>brpc-demo</artifactId>
+    <artifactId>brpc-framework</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>brpc-client-demo</module>
-        <module>brpc-provider-demo</module>
-        <module>brpc-api</module>
+        <module>brpc-common</module>
+        <module>brpc-core</module>
     </modules>
 
     <properties>
@@ -22,19 +21,4 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.zookeeper</groupId>
-            <artifactId>zookeeper</artifactId>
-        </dependency>
-    </dependencies>
 </project>

@@ -6,7 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="brpc-demo" />
+        <module name="brpc-common" />
+        <module name="brpc-provider-demo" />
+        <module name="brpc-api" />
+        <module name="brpc-core" />
+        <module name="brpc-manager" />
+        <module name="brpc-client-demo" />
       </profile>
     </annotationProcessing>
   </component>
