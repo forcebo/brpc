@@ -67,6 +67,23 @@ public class ZookeeperUtil {
     }
 
     /**
+     * 判断节点是否存在
+     * @param zk zk实例
+     * @param nodePath 节点路径
+     * @param watcher watcher
+     * @return true 存在 | false 不存在
+     */
+    public static boolean exists(ZooKeeper zk, String nodePath, Watcher watcher) {
+        try {
+            System.out.println(zk.exists(nodePath, watcher));
+            return zk.exists(nodePath, watcher) != null;
+        } catch (KeeperException | InterruptedException e) {
+            log.error("节点[{}]存在异常", e, nodePath);
+            throw new ZookeeperException(e);
+        }
+    }
+
+    /**
      * 关闭zookeeper的方法
      * @param zooKeeper
      */

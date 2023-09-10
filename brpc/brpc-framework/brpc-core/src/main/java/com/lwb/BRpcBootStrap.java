@@ -1,14 +1,26 @@
 package com.lwb;
 
 
+import com.lwb.utils.NetUtil;
+import com.lwb.utils.zookeeper.ZookeeperNode;
+import com.lwb.utils.zookeeper.ZookeeperUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.zookeeper.CreateMode;
+import org.apache.zookeeper.ZooKeeper;
 
 import java.util.List;
 
 @Slf4j
 public class BRpcBootStrap {
 
-    private static BRpcBootStrap bRpcBootStrap = new BRpcBootStrap();
+    private static final BRpcBootStrap bRpcBootStrap = new BRpcBootStrap();
+
+    private String appName = "default";
+    private RegistryConfig registryConfig;
+    private ProtocolConfig protocolConfig;
+    private int port = 9088;
+    //维护一个zookeeper实例
+    private ZooKeeper zooKeeper;
 
     private BRpcBootStrap() {
         // 构造启动引导程序时要做初始化的事
@@ -27,6 +39,7 @@ public class BRpcBootStrap {
      * @return this
      */
     public BRpcBootStrap application(String appName){
+        this.appName = appName;
         return this;
     }
 
@@ -35,6 +48,9 @@ public class BRpcBootStrap {
      * @return this
      */
     public BRpcBootStrap registry(RegistryConfig registryConfig) {
+        //这里维护一个zookeeper实例，但是，如果这样写就会将zookeeper和当前工程耦合（以后扩展）
+        zooKeeper = ZookeeperUtil.createZookeeper();
+        this.registryConfig = registryConfig;
         return this;
     }
 
@@ -44,6 +60,7 @@ public class BRpcBootStrap {
      * @return this
      */
     public BRpcBootStrap protocol(ProtocolConfig protocolConfig) {
+        this.protocolConfig = protocolConfig;
         if (log.isDebugEnabled()) {
             log.debug("当前工程使用了哪个协议： " + protocolConfig.toString() + "协议进行序列化");
         }
@@ -56,6 +73,25 @@ public class BRpcBootStrap {
      * @return this
      */
     public BRpcBootStrap publish(ServiceConfig<?> service) {
+        //服务名称的节点（持久节点）
+        System.out.println(service.getInterface().getName());
+        String parentNode =Constant.BASE_PROVIDERS_PATH + "/" + service.getInterface().getName();
+
+        if(!ZookeeperUtil.exists(zooKeeper, parentNode, null)) {
+            System.out.println(1);
+            ZookeeperNode zookeeperNode = new ZookeeperNode(parentNode, null);
+            ZookeeperUtil.createNode(zooKeeper, zookeeperNode, null, CreateMode.PERSISTENT);
+        }
+
+        // 创建本机的临时节点, ip:port
+        // 服务提供方的端口一般自己设定， 还需要一个获取ip的方法
+        // ip 我们通常是需要一个局域网ip， 而不是127.0.0.1，也不是ipv6
+        String node = parentNode + "/" + NetUtil.getIp() + ":" + port;
+        if(!ZookeeperUtil.exists(zooKeeper, node, null)) {
+            System.out.println(123);
+            ZookeeperNode zookeeperNode = new ZookeeperNode(node, null);
+            ZookeeperUtil.createNode(zooKeeper, zookeeperNode, null, CreateMode.EPHEMERAL);
+        }
         if(log.isDebugEnabled()) {
             log.debug("服务{}， 已经被注册", service.getInterface().getName());
         }
@@ -75,7 +111,11 @@ public class BRpcBootStrap {
      * 启动netty服务
      */
     public void start() {
-
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

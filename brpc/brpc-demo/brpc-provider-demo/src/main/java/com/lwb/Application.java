@@ -18,7 +18,7 @@ public class Application {
         // （2）发布服务
         BRpcBootStrap.getInstance()
                 .application("first-BRpc-provider")
-                .registry(new RegistryConfig("Zookeeper"))
+                .registry(new RegistryConfig("Zookeeper://127.0.0.1:2181"))
                 .protocol(new ProtocolConfig("jdk"))
                 .publish(service)
                 .start();
