@@ -11,7 +11,7 @@
         <module name="brpc-api" />
         <module name="brpc-core" />
         <module name="brpc-manager" />
-        <module name="brpc-client-demo" />
+        <module name="brpc-consumer-demo" />
       </profile>
     </annotationProcessing>
   </component>

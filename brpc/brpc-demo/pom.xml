@@ -12,7 +12,7 @@
     <artifactId>brpc-demo</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>brpc-client-demo</module>
+        <module>brpc-consumer-demo</module>
         <module>brpc-provider-demo</module>
         <module>brpc-api</module>
     </modules>
