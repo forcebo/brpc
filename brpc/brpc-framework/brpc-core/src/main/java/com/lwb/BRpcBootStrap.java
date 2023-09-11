@@ -1,14 +1,15 @@
 package com.lwb;
 
 
-import com.lwb.utils.NetUtil;
-import com.lwb.utils.zookeeper.ZookeeperNode;
-import com.lwb.utils.zookeeper.ZookeeperUtil;
+import com.lwb.discovery.Registry;
+import com.lwb.discovery.impl.ZookeeperRegistry;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.ZooKeeper;
 
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class BRpcBootStrap {
@@ -19,8 +20,10 @@ public class BRpcBootStrap {
     private RegistryConfig registryConfig;
     private ProtocolConfig protocolConfig;
     private int port = 9088;
-    //维护一个zookeeper实例
-    private ZooKeeper zooKeeper;
+    //注册中心
+    private Registry registry;
+    //维护已经发布且暴露的服务列表 key -> interface的全限名称  value -> ServiceConfig
+    private static final Map<String, ServiceConfig<?>> SERVERS_LIST = new ConcurrentHashMap<>(16);
 
     private BRpcBootStrap() {
         // 构造启动引导程序时要做初始化的事
@@ -48,9 +51,7 @@ public class BRpcBootStrap {
      * @return this
      */
     public BRpcBootStrap registry(RegistryConfig registryConfig) {
-        //这里维护一个zookeeper实例，但是，如果这样写就会将zookeeper和当前工程耦合（以后扩展）
-        zooKeeper = ZookeeperUtil.createZookeeper();
-        this.registryConfig = registryConfig;
+        this.registry = registryConfig.getRegistry();
         return this;
     }
 
@@ -73,28 +74,12 @@ public class BRpcBootStrap {
      * @return this
      */
     public BRpcBootStrap publish(ServiceConfig<?> service) {
-        //服务名称的节点（持久节点）
-        System.out.println(service.getInterface().getName());
-        String parentNode =Constant.BASE_PROVIDERS_PATH + "/" + service.getInterface().getName();
+        // 抽象了注册中心的概念，使用注册中心的一个实现
+        registry.register(service);
 
-        if(!ZookeeperUtil.exists(zooKeeper, parentNode, null)) {
-            System.out.println(1);
-            ZookeeperNode zookeeperNode = new ZookeeperNode(parentNode, null);
-            ZookeeperUtil.createNode(zooKeeper, zookeeperNode, null, CreateMode.PERSISTENT);
-        }
-
-        // 创建本机的临时节点, ip:port
-        // 服务提供方的端口一般自己设定， 还需要一个获取ip的方法
-        // ip 我们通常是需要一个局域网ip， 而不是127.0.0.1，也不是ipv6
-        String node = parentNode + "/" + NetUtil.getIp() + ":" + port;
-        if(!ZookeeperUtil.exists(zooKeeper, node, null)) {
-            System.out.println(123);
-            ZookeeperNode zookeeperNode = new ZookeeperNode(node, null);
-            ZookeeperUtil.createNode(zooKeeper, zookeeperNode, null, CreateMode.EPHEMERAL);
-        }
-        if(log.isDebugEnabled()) {
-            log.debug("服务{}， 已经被注册", service.getInterface().getName());
-        }
+        //当服务调用方，通过接口、方法名、具体的方法参数列表发起调用，服务提供方要知道使用哪个实现
+        //1. new 一个 2.spring beanFactory.getBean(Class) 3.自己维护映射关系
+        SERVERS_LIST.put(service.getInterface().getName(), service);
         return this;
     }
 
@@ -103,7 +88,10 @@ public class BRpcBootStrap {
      * @param services 封装需要发布的服务集合
      * @return this
      */
-    public BRpcBootStrap publish(List<?> services) {
+    public BRpcBootStrap publish(List<ServiceConfig<?>> services) {
+        for (ServiceConfig<?> service : services) {
+            this.publish(service);
+        }
         return this;
     }
 
@@ -112,7 +100,7 @@ public class BRpcBootStrap {
      */
     public void start() {
         try {
-            Thread.sleep(20000);
+            Thread.sleep(2000000000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -125,6 +113,7 @@ public class BRpcBootStrap {
     public BRpcBootStrap reference(ReferenceConfig<?> reference) {
         // 在这个方法里我们是否可以拿到相关的配置项-注册中心
         // 配置reference， 将来调用get方法时，方便获取代理对象
+        reference.setRegistry(registry);
         return this;
     }
 }
