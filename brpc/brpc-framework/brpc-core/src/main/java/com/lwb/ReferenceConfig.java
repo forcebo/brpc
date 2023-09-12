@@ -19,6 +19,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class ReferenceConfig<T> {
@@ -69,19 +71,37 @@ public class ReferenceConfig<T> {
                 // q:连接如果放在这的话，就意味着每次调用都会产生一个新的netty连接
                 // 解决方案：缓存channel，尝试从缓存中获取channel，如果未获取，则创建新的连接并进行缓存,定义在BRpcBootStrap中
                 Channel channel = BRpcBootStrap.CHANNEL_CACHE.get(address);
+                CompletableFuture<Channel> channelFuture = new CompletableFuture<>();
                 if (channel == null) {
                     // await方法会阻塞，等待连接成功再返回
                     // sync和await都是阻塞当前线程，获取返回值（连接和发送数据的过程都是异步的）
                     // sync会前者会抛出异常，
-                    channel = NettyBootStrapInitializer.getBootstrap().connect(address).await().channel();
+                    NettyBootStrapInitializer.getBootstrap().connect(address).addListener(
+                            (ChannelFutureListener) promise -> {
+                                if (promise.isDone()) {
+                                    // 异步的
+                                    if(log.isDebugEnabled()) {
+                                        log.debug("已经和[{}]成功建立了连接", address);
+                                    }
+                                    channelFuture.complete(promise.channel());
+                                } else if (!promise.isSuccess()) {
+                                    channelFuture.completeExceptionally(promise.cause());
+                                }
+                            }
+                    );
+                    //阻塞获取结果
+                    channel = channelFuture.get(3, TimeUnit.SECONDS);
+                    //缓存channel
                     BRpcBootStrap.CHANNEL_CACHE.put(address, channel);
                 }
                 if (channel == null) {
+                    log.error("获取或建立与[{}]的通道时发生了异常。", address);
                     throw new NetWorkException("获取通道发生异常！");
                 }
                 /**
                  * ----------------同步策略---------------------
                  */
+                /*
                 ChannelFuture channelFuture = channel.writeAndFlush(new Object()).await();
                 // get 阻塞获取结果， getNow 获取当前结果， 如果未完成， 返回null
                 if (channelFuture.isDone()) {
@@ -91,7 +111,21 @@ public class ReferenceConfig<T> {
                     Throwable cause = channelFuture.cause();
                     throw new RuntimeException(cause);
                 }
-                return null;
+                */
+                /**
+                 * ---------------异步策略---------------------
+                 */
+
+                //todo: 需要将completableFuture 暴露出去
+                CompletableFuture<Object> completableFuture = new CompletableFuture<>();
+                channel.writeAndFlush(new Object()).addListener((ChannelFutureListener) promise -> {
+                    if (promise.isDone()) {
+                        completableFuture.complete(promise.getNow());
+                    } else if (promise.isSuccess()) {
+                        completableFuture.completeExceptionally(promise.cause());
+                    }
+                 });
+                return completableFuture.get(3, TimeUnit.SECONDS);
             }
         });
         return (T) helloProxy;
