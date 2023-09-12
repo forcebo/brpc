@@ -1,6 +1,8 @@
 package com.lwb;
 
 
+import com.lwb.discovery.RegistryConfig;
+
 public class ConsumerApplication {
     public static void main(String[] args) {
         // 想尽一切办法获取代理对象， 使用ReferenceConfig进行封装

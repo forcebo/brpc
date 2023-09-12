@@ -2,11 +2,19 @@ package com.lwb;
 
 
 import com.lwb.discovery.Registry;
-import com.lwb.discovery.impl.ZookeeperRegistry;
+import com.lwb.discovery.RegistryConfig;
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.extern.slf4j.Slf4j;
 
 
-import java.util.HashMap;
+import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -22,6 +30,10 @@ public class BRpcBootStrap {
     private int port = 9088;
     //注册中心
     private Registry registry;
+
+    //netty连接的缓存
+    public final static Map<InetSocketAddress, Channel> CHANNEL_CACHE = new ConcurrentHashMap<>(16);
+
     //维护已经发布且暴露的服务列表 key -> interface的全限名称  value -> ServiceConfig
     private static final Map<String, ServiceConfig<?>> SERVERS_LIST = new ConcurrentHashMap<>(16);
 
@@ -99,10 +111,35 @@ public class BRpcBootStrap {
      * 启动netty服务
      */
     public void start() {
+        // 1. 创建EventLoop， 老板只负责请求，之后会将请求分发至worker
+        EventLoopGroup boss = new NioEventLoopGroup(2);
+        EventLoopGroup worker = new NioEventLoopGroup(10);
         try {
-            Thread.sleep(2000000000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            //2.创建一个服务引导程序
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            //3.配置服务器
+            serverBootstrap =  serverBootstrap.group(boss, worker)
+                    .channel(NioServerSocketChannel.class)
+                    .childHandler(new ChannelInitializer<SocketChannel>() {
+                        @Override
+                        protected void initChannel(SocketChannel socketChannel) throws Exception {
+                            //核心，需要添加出栈和入栈的handler
+                            socketChannel.pipeline().addLast(null);
+                        }
+                    });
+            //4.绑定端口
+            ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
+            //5.优雅关闭
+            channelFuture.channel().closeFuture().sync();
+        }catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                boss.shutdownGracefully().sync();
+                worker.shutdownGracefully().sync();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 

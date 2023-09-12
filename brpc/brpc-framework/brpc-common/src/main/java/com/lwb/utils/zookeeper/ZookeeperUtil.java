@@ -28,7 +28,9 @@ public class ZookeeperUtil {
         try {
             final ZooKeeper zooKeeper = new ZooKeeper(connectString, timeout, event -> {
                 if (event.getState() == Watcher.Event.KeeperState.SyncConnected) {
-                    System.out.println("客户端连接成功");
+                    if (log.isDebugEnabled()) {
+                        log.debug("客户端已经连接成功。");
+                    }
                     countDownLatch.countDown();
                 }
             });

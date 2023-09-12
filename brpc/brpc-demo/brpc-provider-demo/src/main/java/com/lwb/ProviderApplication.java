@@ -1,5 +1,6 @@
 package com.lwb;
 
+import com.lwb.discovery.RegistryConfig;
 import com.lwb.impl.HelloBRpcImpl;
 import lombok.extern.slf4j.Slf4j;
 

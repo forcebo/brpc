@@ -1,6 +1,6 @@
-package com.lwb;
+package com.lwb.discovery;
 
-import com.lwb.discovery.Registry;
+import com.lwb.Constant;
 import com.lwb.discovery.impl.NacosRegistry;
 import com.lwb.discovery.impl.ZookeeperRegistry;
 import com.lwb.exceptions.DiscoveryException;
