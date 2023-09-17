@@ -2,7 +2,9 @@ package com.lwb;
 
 
 import com.lwb.discovery.RegistryConfig;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ConsumerApplication {
     public static void main(String[] args) {
         // 想尽一切办法获取代理对象， 使用ReferenceConfig进行封装
@@ -21,6 +23,7 @@ public class ConsumerApplication {
 
         //获取一个代理对象
         HelloBRpc helloBRpc = reference.get();
-        helloBRpc.sayHi("你好");
+        String sayHi = helloBRpc.sayHi("你好");
+        log.info("sayHi-->{}", sayHi);
     }
 }
