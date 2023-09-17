@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="0375fdcc-9a7f-4793-91da-299c154a993f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/ReferenceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/ReferenceConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,7 +153,6 @@
         <item itemvalue="Application.ProviderApplication" />
         <item itemvalue="Application.ConsumerApplication" />
         <item itemvalue="Application.NetUtil" />
-        <item itemvalue="Application.Application (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -186,7 +184,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="branch1" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
