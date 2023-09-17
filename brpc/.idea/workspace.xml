@@ -6,7 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="0375fdcc-9a7f-4793-91da-299c154a993f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-demo/brpc-consumer-demo/src/main/java/com/lwb/ConsumerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-demo/brpc-consumer-demo/src/main/java/com/lwb/ConsumerApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/BRpcBootStrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/BRpcBootStrap.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/ReferenceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/ReferenceConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/discovery/NettyBootStrapInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/discovery/NettyBootStrapInitializer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +61,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/brpc-manager/src/main/resources" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../javaweb/hm-dianping" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -72,7 +75,7 @@
       <recent name="D:\bo\brpc\brpc\brpc-manager\src\main\resources" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MyCompletableFuture">
+  <component name="RunManager" selected="Application.ConsumerApplication">
     <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.lwb.Application" />
       <module name="brpc-manager" />
@@ -150,11 +153,10 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MyCompletableFuture" />
-        <item itemvalue="Application.ProviderApplication" />
         <item itemvalue="Application.ConsumerApplication" />
+        <item itemvalue="Application.ProviderApplication" />
+        <item itemvalue="Application.MyCompletableFuture" />
         <item itemvalue="Application.NetUtil" />
-        <item itemvalue="Application.Application (1)" />
       </list>
     </recent_temporary>
   </component>
@@ -174,7 +176,9 @@
       <workItem from="1694353103126" duration="769000" />
       <workItem from="1694421922194" duration="7914000" />
       <workItem from="1694436445333" duration="850000" />
-      <workItem from="1694524725961" duration="5197000" />
+      <workItem from="1694524725961" duration="9285000" />
+      <workItem from="1694838643088" duration="3818000" />
+      <workItem from="1694951816003" duration="6165000" />
     </task>
     <servers />
   </component>

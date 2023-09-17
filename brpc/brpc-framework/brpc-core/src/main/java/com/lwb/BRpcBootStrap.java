@@ -4,10 +4,9 @@ package com.lwb;
 import com.lwb.discovery.Registry;
 import com.lwb.discovery.RegistryConfig;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -15,8 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 
 
 import java.net.InetSocketAddress;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -36,6 +37,9 @@ public class BRpcBootStrap {
 
     //维护已经发布且暴露的服务列表 key -> interface的全限名称  value -> ServiceConfig
     private static final Map<String, ServiceConfig<?>> SERVERS_LIST = new ConcurrentHashMap<>(16);
+
+    //定义全局的对外挂起的completableFuture接口
+    public final static Map<Long, CompletableFuture<Object>> PENDING_REQUEST = new ConcurrentHashMap<>(128);
 
     private BRpcBootStrap() {
         // 构造启动引导程序时要做初始化的事
@@ -124,7 +128,15 @@ public class BRpcBootStrap {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             //核心，需要添加出栈和入栈的handler
-                            socketChannel.pipeline().addLast(null);
+                            socketChannel.pipeline().addLast(new SimpleChannelInboundHandler<>() {
+                                @Override
+                                protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
+                                    ByteBuf byteBuf = (ByteBuf) msg;
+                                    log.info("byteBuf-->{}", byteBuf.toString(Charset.defaultCharset()));
+
+                                    channelHandlerContext.channel().writeAndFlush(Unpooled.copiedBuffer("yrpc--hello".getBytes()));
+                                }
+                            });
                         }
                     });
             //4.绑定端口
