@@ -1,6 +1,8 @@
 package com.lwb;
 
 
+import com.lwb.channelHandler.handler.BRpcMessageDecoder;
+import com.lwb.channelHandler.handler.MethodCallHandler;
 import com.lwb.discovery.Registry;
 import com.lwb.discovery.RegistryConfig;
 import io.netty.bootstrap.ServerBootstrap;
@@ -10,6 +12,7 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LoggingHandler;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -36,7 +39,7 @@ public class BRpcBootStrap {
     public final static Map<InetSocketAddress, Channel> CHANNEL_CACHE = new ConcurrentHashMap<>(16);
 
     //维护已经发布且暴露的服务列表 key -> interface的全限名称  value -> ServiceConfig
-    private static final Map<String, ServiceConfig<?>> SERVERS_LIST = new ConcurrentHashMap<>(16);
+    public static final Map<String, ServiceConfig<?>> SERVERS_LIST = new ConcurrentHashMap<>(16);
 
     //定义全局的对外挂起的completableFuture接口
     public final static Map<Long, CompletableFuture<Object>> PENDING_REQUEST = new ConcurrentHashMap<>(128);
@@ -128,15 +131,10 @@ public class BRpcBootStrap {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             //核心，需要添加出栈和入栈的handler
-                            socketChannel.pipeline().addLast(new SimpleChannelInboundHandler<>() {
-                                @Override
-                                protected void channelRead0(ChannelHandlerContext channelHandlerContext, Object msg) throws Exception {
-                                    ByteBuf byteBuf = (ByteBuf) msg;
-                                    log.info("byteBuf-->{}", byteBuf.toString(Charset.defaultCharset()));
-
-                                    channelHandlerContext.channel().writeAndFlush(Unpooled.copiedBuffer("yrpc--hello".getBytes()));
-                                }
-                            });
+                            socketChannel.pipeline().addLast(new LoggingHandler())
+                                    .addLast(new BRpcMessageDecoder())
+                                    //根据请求进行方法调用
+                                    .addLast(new MethodCallHandler());
                         }
                     });
             //4.绑定端口

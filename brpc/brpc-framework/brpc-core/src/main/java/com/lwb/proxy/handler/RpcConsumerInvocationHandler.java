@@ -5,6 +5,8 @@ import com.lwb.discovery.NettyBootStrapInitializer;
 import com.lwb.discovery.Registry;
 import com.lwb.exceptions.DiscoveryException;
 import com.lwb.exceptions.NetWorkException;
+import com.lwb.transport.message.BRpcRequest;
+import com.lwb.transport.message.RequestPayload;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
@@ -56,10 +58,26 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         if(log.isDebugEnabled()) {
             log.debug("获取了和【{}】建立的连接通道,准备发送数据", address);
         }
+
         /*
          *--------------------封装报文-----------------------
          */
+        RequestPayload requestPayload = RequestPayload.builder()
+                .interfaceName(interfaceRef.getName())
+                .methodName(method.getName())
+                .parametersType(method.getParameterTypes())
+                .parametersValues(args)
+                .returnType(method.getReturnType())
+                .build();
 
+        //todo:后续对请求id和类型做处理
+        BRpcRequest bRpcRequest = BRpcRequest.builder()
+                .requestId(1L)
+                .compressType((byte) 1)
+                .requestType((byte) 1)
+                .serializeType((byte) 1)
+                .requestPayload(requestPayload)
+                .build();
         /**
          * ----------------同步策略---------------------
          */
@@ -80,7 +98,8 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         //4.写出报文
         CompletableFuture<Object> completableFuture = new CompletableFuture<>();
         BRpcBootStrap.PENDING_REQUEST.put(1L, completableFuture);
-        channel.writeAndFlush(Unpooled.copiedBuffer("hello".getBytes())).addListener((ChannelFutureListener) promise -> {
+        //这个请求的实例就会进入pipeline执行出站的一系列操作
+        channel.writeAndFlush(bRpcRequest).addListener((ChannelFutureListener) promise -> {
             if (!promise.isSuccess()) {
                 completableFuture.completeExceptionally(promise.cause());
             }

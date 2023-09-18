@@ -5,14 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0375fdcc-9a7f-4793-91da-299c154a993f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/ConsumerChannelInitializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/MySimpleChannelInboundHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/proxy/handler/RpcConsumerInvocationHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brpc-demo/brpc-consumer-demo/src/main/java/com/lwb/ConsumerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-demo/brpc-consumer-demo/src/main/java/com/lwb/ConsumerApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/BRpcBootStrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/BRpcBootStrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/ReferenceConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/ReferenceConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/discovery/NettyBootStrapInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/discovery/NettyBootStrapInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/ConsumerChannelInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/ConsumerChannelInitializer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/proxy/handler/RpcConsumerInvocationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/proxy/handler/RpcConsumerInvocationHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,8 +154,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.ConsumerApplication" />
-        <item itemvalue="Application.MyCompletableFuture" />
         <item itemvalue="Application.ProviderApplication" />
+        <item itemvalue="Application.MyCompletableFuture" />
         <item itemvalue="Application.NetUtil" />
       </list>
     </recent_temporary>
@@ -180,6 +177,7 @@
       <workItem from="1694421922194" duration="7914000" />
       <workItem from="1694436445333" duration="850000" />
       <workItem from="1694524725961" duration="5197000" />
+      <workItem from="1695004817205" duration="14011000" />
     </task>
     <servers />
   </component>
@@ -208,16 +206,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/brpc-framework/brpc-common/src/main/java/com/lwb/utils/zookeeper/ZookeeperUtil.java</url>
-          <line>57</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
