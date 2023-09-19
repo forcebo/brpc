@@ -19,7 +19,11 @@ public class MethodCallHandler extends SimpleChannelInboundHandler<BRpcRequest> 
         RequestPayload requestPayload = bRpcRequest.getRequestPayload();
         //根据负载内容进行方法调用
         Object object = callTargetMethod(requestPayload);
+        if (log.isDebugEnabled()) {
+            log.debug("请求【{}】已经在服务端完成方法调用。",bRpcRequest.getRequestId());
+        }
         //封装响应
+
         //写出响应
         channelHandlerContext.channel().writeAndFlush(object);
     }

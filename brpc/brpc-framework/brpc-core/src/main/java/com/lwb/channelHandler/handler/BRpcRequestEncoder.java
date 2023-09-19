@@ -1,6 +1,5 @@
 package com.lwb.channelHandler.handler;
 
-import com.lwb.enumeration.RequestType;
 import com.lwb.transport.message.BRpcRequest;
 import com.lwb.transport.message.MessageFormatConstant;
 import com.lwb.transport.message.RequestPayload;
@@ -12,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.nio.charset.StandardCharsets;
 
 /**
  * 自定义协议编码器
@@ -29,7 +27,7 @@ import java.nio.charset.StandardCharsets;
  * 出站时，第一个经过的处理器
  */
 @Slf4j
-public class BRpcMessageEncoder extends MessageToByteEncoder<BRpcRequest> {
+public class BRpcRequestEncoder extends MessageToByteEncoder<BRpcRequest> {
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, BRpcRequest bRpcRequest, ByteBuf byteBuf) throws Exception {
         //header
@@ -57,6 +55,9 @@ public class BRpcMessageEncoder extends MessageToByteEncoder<BRpcRequest> {
         byteBuf.writeInt(MessageFormatConstant.HEADER_LENGTH + bodyLength);
         //归位
         byteBuf.writerIndex(writerIndex);
+        if (log.isDebugEnabled()) {
+            log.debug("请求【{}】已经完成报文的编码。",bRpcRequest.getRequestId());
+        }
     }
 
     private byte[] getBodyBytes(RequestPayload requestPayload) {

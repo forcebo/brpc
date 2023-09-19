@@ -1,8 +1,8 @@
 package com.lwb.channelHandler.handler;
 
-import ch.qos.logback.classic.spi.EventArgUtil;
 import com.lwb.enumeration.RequestType;
 import com.lwb.transport.message.BRpcRequest;
+import com.lwb.transport.message.BRpcResponse;
 import com.lwb.transport.message.MessageFormatConstant;
 import com.lwb.transport.message.RequestPayload;
 import io.netty.buffer.ByteBuf;
@@ -10,7 +10,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 /**
  * 基于长度字段的帧解码器
@@ -20,15 +22,15 @@ import java.io.*;
  *  * 1B version(版本) ---> 1
  *  * 2B header length 首部的长度
  *  * 4B full length 报文总长度
+ *  * 1B code
  *  * 1B serialize
  *  * 1B compress
- *  * 1B requestType
  *  * 8B requestId
  *  * body
  */
 @Slf4j
-public class BRpcMessageDecoder extends LengthFieldBasedFrameDecoder {
-    public BRpcMessageDecoder() {
+public class BRpcResponseDecoder extends LengthFieldBasedFrameDecoder {
+    public BRpcResponseDecoder() {
         //找到当前报文的总长度
         super(
                 //最大帧的长度，超过这个长度的直接丢掉
@@ -73,44 +75,44 @@ public class BRpcMessageDecoder extends LengthFieldBasedFrameDecoder {
         //解析总长度
         int fullLength = byteBuf.readInt();
 
-        //请求类型
-        byte requestType = byteBuf.readByte();
+        //响应码
+        byte responseCode = byteBuf.readByte();
         //序列化类型
         byte serializeType = byteBuf.readByte();
         //压缩类型
         byte compressType = byteBuf.readByte();
         //请求id
         long requestId = byteBuf.readLong();
-
-        int payloadLength = fullLength - headLength;
-        byte[] payload = new byte[payloadLength];
-        byteBuf.readBytes(payload);
-
         //封装
-        BRpcRequest bRpcRequest = new BRpcRequest();
-        bRpcRequest.setRequestType(requestType);
-        bRpcRequest.setCompressType(compressType);
-        bRpcRequest.setSerializeType(serializeType);
-        bRpcRequest.setRequestId(requestId);
+        BRpcResponse bRpcResponse = new BRpcResponse();
+        bRpcResponse.setCode(responseCode);
+        bRpcResponse.setCompressType(compressType);
+        bRpcResponse.setSerializeType(serializeType);
+        bRpcResponse.setRequestId(requestId);
 
-        //如果是心跳请求，直接返回
-        if (requestType == RequestType.HEART_BEAT.getId()) {
-            return bRpcRequest;
-        }
+        //todo:如果是心跳请求，直接返回
+//        if (requestType == RequestType.HEART_BEAT.getId()) {
+//            return bRpcRequest;
+//        }
 
         // todo: 解压缩
-
+        int bodyLength = fullLength - headLength;
+        byte[] payload = new byte[bodyLength];
+        byteBuf.readBytes(payload);
         // 反序列化
         try (ByteArrayInputStream bis = new ByteArrayInputStream(payload);
              ObjectInputStream ois = new ObjectInputStream(bis);
         ){
-            RequestPayload requestPayload = (RequestPayload) ois.readObject();
-            bRpcRequest.setRequestPayload(requestPayload);
+            Object body = ois.readObject();
+            bRpcResponse.setBody(body);
         }catch (IOException | ClassNotFoundException e) {
             log.error("请求【{}】反序列化时发生了异常",requestId);
             throw new RuntimeException(e);
         }
-        return bRpcRequest;
+        if (log.isDebugEnabled()) {
+            log.debug("请求【{}】已经在调用端完成解码工作。",bRpcResponse.getRequestId());
+        }
+        return bRpcResponse;
     }
 
 

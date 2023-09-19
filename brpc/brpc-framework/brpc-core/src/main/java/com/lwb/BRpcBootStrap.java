@@ -1,13 +1,12 @@
 package com.lwb;
 
 
-import com.lwb.channelHandler.handler.BRpcMessageDecoder;
+import com.lwb.channelHandler.handler.BRpcRequestDecoder;
+import com.lwb.channelHandler.handler.BRpcResponseEncoder;
 import com.lwb.channelHandler.handler.MethodCallHandler;
 import com.lwb.discovery.Registry;
 import com.lwb.discovery.RegistryConfig;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -17,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 
 
 import java.net.InetSocketAddress;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -132,9 +130,10 @@ public class BRpcBootStrap {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             //核心，需要添加出栈和入栈的handler
                             socketChannel.pipeline().addLast(new LoggingHandler())
-                                    .addLast(new BRpcMessageDecoder())
+                                    .addLast(new BRpcRequestDecoder())
                                     //根据请求进行方法调用
-                                    .addLast(new MethodCallHandler());
+                                    .addLast(new MethodCallHandler())
+                                    .addLast(new BRpcResponseEncoder());
                         }
                     });
             //4.绑定端口
