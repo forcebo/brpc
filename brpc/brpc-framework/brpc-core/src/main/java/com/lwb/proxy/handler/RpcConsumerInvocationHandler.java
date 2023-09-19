@@ -3,6 +3,7 @@ package com.lwb.proxy.handler;
 import com.lwb.BRpcBootStrap;
 import com.lwb.discovery.NettyBootStrapInitializer;
 import com.lwb.discovery.Registry;
+import com.lwb.enumeration.RequestType;
 import com.lwb.exceptions.DiscoveryException;
 import com.lwb.exceptions.NetWorkException;
 import com.lwb.transport.message.BRpcRequest;
@@ -74,7 +75,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         BRpcRequest bRpcRequest = BRpcRequest.builder()
                 .requestId(1L)
                 .compressType((byte) 1)
-                .requestType((byte) 1)
+                .requestType(RequestType.REQUEST.getId())
                 .serializeType((byte) 1)
                 .requestPayload(requestPayload)
                 .build();

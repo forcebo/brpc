@@ -1,6 +1,7 @@
 package com.lwb.channelHandler.handler;
 
 import ch.qos.logback.classic.spi.EventArgUtil;
+import com.lwb.enumeration.RequestType;
 import com.lwb.transport.message.BRpcRequest;
 import com.lwb.transport.message.MessageFormatConstant;
 import com.lwb.transport.message.RequestPayload;
@@ -72,7 +73,7 @@ public class BRpcMessageDecoder extends LengthFieldBasedFrameDecoder {
         //解析总长度
         int fullLength = byteBuf.readInt();
 
-        //请求类型,todo 判断是不是心跳检测
+        //请求类型
         byte requestType = byteBuf.readByte();
         //序列化类型
         byte serializeType = byteBuf.readByte();
@@ -91,6 +92,11 @@ public class BRpcMessageDecoder extends LengthFieldBasedFrameDecoder {
         bRpcRequest.setCompressType(compressType);
         bRpcRequest.setSerializeType(serializeType);
         bRpcRequest.setRequestId(requestId);
+
+        //如果是心跳请求，直接返回
+        if (requestType == RequestType.HEART_BEAT.getId()) {
+            return bRpcRequest;
+        }
 
         // todo: 解压缩
 

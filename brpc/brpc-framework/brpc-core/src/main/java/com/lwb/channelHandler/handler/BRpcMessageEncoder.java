@@ -1,5 +1,6 @@
 package com.lwb.channelHandler.handler;
 
+import com.lwb.enumeration.RequestType;
 import com.lwb.transport.message.BRpcRequest;
 import com.lwb.transport.message.MessageFormatConstant;
 import com.lwb.transport.message.RequestPayload;
@@ -36,25 +37,33 @@ public class BRpcMessageEncoder extends MessageToByteEncoder<BRpcRequest> {
         byteBuf.writeByte(MessageFormatConstant.VERSION);
         byteBuf.writeShort(MessageFormatConstant.HEADER_LENGTH);
         // full length
-        byteBuf.writerIndex(byteBuf.writerIndex() + 4);
+        byteBuf.writerIndex(byteBuf.writerIndex() + MessageFormatConstant.FULL_FILED_LENGTH);
         byteBuf.writeByte(bRpcRequest.getRequestType());
         byteBuf.writeByte(bRpcRequest.getCompressType());
         byteBuf.writeByte(bRpcRequest.getSerializeType());
         byteBuf.writeLong(bRpcRequest.getRequestId());
+        //判断是否是心跳请求
         // body(requestPayload)
         byte[] body = getBodyBytes(bRpcRequest.getRequestPayload());
-        byteBuf.writeBytes(body);
+        if (body != null){
+            byteBuf.writeBytes(body);
+        }
+        int bodyLength = body == null? 0 : body.length;
         // 先保存当前写指针的位置
         int writerIndex = byteBuf.writerIndex();
         // 将写指针移到之前位置
-        byteBuf.writerIndex(7);
-        byteBuf.writeInt(MessageFormatConstant.HEADER_LENGTH + body.length);
+        byteBuf.writerIndex(MessageFormatConstant.MAGIC.length + MessageFormatConstant.VERSION_LENGTH
+                + MessageFormatConstant.HEADER_FILED_LENGTH);
+        byteBuf.writeInt(MessageFormatConstant.HEADER_LENGTH + bodyLength);
         //归位
         byteBuf.writerIndex(writerIndex);
     }
 
     private byte[] getBodyBytes(RequestPayload requestPayload) {
         // todo: 针对不同的消息类型需要做不同的处理，如心跳的请求
+        if (requestPayload == null) {
+            return null;
+        }
         try {
             //序列化
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
