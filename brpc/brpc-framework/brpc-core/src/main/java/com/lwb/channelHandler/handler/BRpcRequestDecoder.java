@@ -1,6 +1,10 @@
 package com.lwb.channelHandler.handler;
 
+import com.lwb.BRpcBootStrap;
 import com.lwb.enumeration.RequestType;
+import com.lwb.serialize.Serializer;
+import com.lwb.serialize.SerializerFactory;
+import com.lwb.serialize.SerializerWrapper;
 import com.lwb.transport.message.BRpcRequest;
 import com.lwb.transport.message.MessageFormatConstant;
 import com.lwb.transport.message.RequestPayload;
@@ -80,11 +84,6 @@ public class BRpcRequestDecoder extends LengthFieldBasedFrameDecoder {
         byte compressType = byteBuf.readByte();
         //请求id
         long requestId = byteBuf.readLong();
-
-        int payloadLength = fullLength - headLength;
-        byte[] payload = new byte[payloadLength];
-        byteBuf.readBytes(payload);
-
         //封装
         BRpcRequest bRpcRequest = new BRpcRequest();
         bRpcRequest.setRequestType(requestType);
@@ -97,18 +96,16 @@ public class BRpcRequestDecoder extends LengthFieldBasedFrameDecoder {
             return bRpcRequest;
         }
 
+        int payloadLength = fullLength - headLength;
+        byte[] payload = new byte[payloadLength];
+        byteBuf.readBytes(payload);
+
         // todo: 解压缩
 
         // 反序列化
-        try (ByteArrayInputStream bis = new ByteArrayInputStream(payload);
-             ObjectInputStream ois = new ObjectInputStream(bis);
-        ){
-            RequestPayload requestPayload = (RequestPayload) ois.readObject();
-            bRpcRequest.setRequestPayload(requestPayload);
-        }catch (IOException | ClassNotFoundException e) {
-            log.error("请求【{}】反序列化时发生了异常",requestId);
-            throw new RuntimeException(e);
-        }
+        Serializer serializer = SerializerFactory.getSerializer(serializeType).getSerializer();
+        RequestPayload requestPayload = serializer.deserialize(payload, RequestPayload.class);
+        bRpcRequest.setRequestPayload(requestPayload);
         if (log.isDebugEnabled()) {
             log.debug("请求【{}】已经完成服务的解码。",bRpcRequest.getRequestId());
         }

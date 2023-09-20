@@ -1,5 +1,7 @@
 package com.lwb.channelHandler.handler;
 
+import com.lwb.serialize.Serializer;
+import com.lwb.serialize.SerializerFactory;
 import com.lwb.transport.message.BRpcRequest;
 import com.lwb.transport.message.BRpcResponse;
 import com.lwb.transport.message.MessageFormatConstant;
@@ -41,8 +43,10 @@ public class BRpcResponseEncoder extends MessageToByteEncoder<BRpcResponse> {
         byteBuf.writeByte(bRpcResponse.getSerializeType());
         byteBuf.writeLong(bRpcResponse.getRequestId());
         //如果是心跳请求，ping pong
-        // body(object)
-        byte[] body = getBodyBytes(bRpcResponse.getBody());
+        // body(object) 对响应做序列化
+        Serializer serializer = SerializerFactory.getSerializer(bRpcResponse.getSerializeType()).getSerializer();
+        byte[] body = serializer.serialize(bRpcResponse.getBody());
+        //todo 压缩
         if (body != null){
             byteBuf.writeBytes(body);
         }
@@ -57,24 +61,6 @@ public class BRpcResponseEncoder extends MessageToByteEncoder<BRpcResponse> {
         byteBuf.writerIndex(writerIndex);
         if (log.isDebugEnabled()) {
             log.debug("请求【{}】已经在服务端完成编码。",bRpcResponse.getRequestId());
-        }
-    }
-
-    private byte[] getBodyBytes(Object body) {
-        // todo: 针对不同的消息类型需要做不同的处理，如心跳的请求
-        if (body == null) {
-            return null;
-        }
-        try {
-            //序列化
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream outputStream = new ObjectOutputStream(baos);
-            outputStream.writeObject(body);
-            //压缩
-            return baos.toByteArray();
-        } catch (IOException e) {
-            log.error("序列化时出现异常");
-            throw new RuntimeException(e);
         }
     }
 }

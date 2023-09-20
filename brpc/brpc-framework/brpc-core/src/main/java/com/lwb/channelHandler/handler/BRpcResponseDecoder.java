@@ -1,6 +1,8 @@
 package com.lwb.channelHandler.handler;
 
 import com.lwb.enumeration.RequestType;
+import com.lwb.serialize.Serializer;
+import com.lwb.serialize.SerializerFactory;
 import com.lwb.transport.message.BRpcRequest;
 import com.lwb.transport.message.BRpcResponse;
 import com.lwb.transport.message.MessageFormatConstant;
@@ -100,15 +102,10 @@ public class BRpcResponseDecoder extends LengthFieldBasedFrameDecoder {
         byte[] payload = new byte[bodyLength];
         byteBuf.readBytes(payload);
         // 反序列化
-        try (ByteArrayInputStream bis = new ByteArrayInputStream(payload);
-             ObjectInputStream ois = new ObjectInputStream(bis);
-        ){
-            Object body = ois.readObject();
-            bRpcResponse.setBody(body);
-        }catch (IOException | ClassNotFoundException e) {
-            log.error("请求【{}】反序列化时发生了异常",requestId);
-            throw new RuntimeException(e);
-        }
+        Serializer serializer = SerializerFactory
+                .getSerializer(bRpcResponse.getSerializeType()).getSerializer();
+        Object body = serializer.deserialize(payload, Object.class);
+        bRpcResponse.setBody(body);
         if (log.isDebugEnabled()) {
             log.debug("请求【{}】已经在调用端完成解码工作。",bRpcResponse.getRequestId());
         }

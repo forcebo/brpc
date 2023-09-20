@@ -32,6 +32,7 @@ public class BRpcBootStrap {
     private ProtocolConfig protocolConfig;
     private int port = 9088;
     public static final IdGenerator ID_GENERATOR = new IdGenerator(1, 2);
+    public static String SERIALIZE_TYPE = "jdk";
     //注册中心
     private Registry registry;
 
@@ -162,6 +163,14 @@ public class BRpcBootStrap {
         // 在这个方法里我们是否可以拿到相关的配置项-注册中心
         // 配置reference， 将来调用get方法时，方便获取代理对象
         reference.setRegistry(registry);
+        return this;
+    }
+
+    public BRpcBootStrap serialize(String serializeType) {
+        SERIALIZE_TYPE = serializeType;
+        if(log.isDebugEnabled()) {
+            log.debug("我们配置的序列化方式为【{}】", serializeType);
+        }
         return this;
     }
 }

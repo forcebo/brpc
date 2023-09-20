@@ -6,6 +6,8 @@ import com.lwb.discovery.Registry;
 import com.lwb.enumeration.RequestType;
 import com.lwb.exceptions.DiscoveryException;
 import com.lwb.exceptions.NetWorkException;
+import com.lwb.serialize.Serializer;
+import com.lwb.serialize.SerializerFactory;
 import com.lwb.transport.message.BRpcRequest;
 import com.lwb.transport.message.RequestPayload;
 import com.lwb.utils.IdGenerator;
@@ -77,7 +79,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
                 .requestId(BRpcBootStrap.ID_GENERATOR.getId())
                 .compressType((byte) 1)
                 .requestType(RequestType.REQUEST.getId())
-                .serializeType((byte) 1)
+                .serializeType(SerializerFactory.getSerializer(BRpcBootStrap.SERIALIZE_TYPE).getCode())
                 .requestPayload(requestPayload)
                 .build();
         /**

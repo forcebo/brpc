@@ -1,16 +1,15 @@
 package com.lwb.channelHandler.handler;
 
+import com.lwb.BRpcBootStrap;
+import com.lwb.exceptions.SerializerException;
+import com.lwb.serialize.Serializer;
+import com.lwb.serialize.SerializerFactory;
 import com.lwb.transport.message.BRpcRequest;
 import com.lwb.transport.message.MessageFormatConstant;
-import com.lwb.transport.message.RequestPayload;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 import lombok.extern.slf4j.Slf4j;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 /**
  * 自定义协议编码器
@@ -42,7 +41,13 @@ public class BRpcRequestEncoder extends MessageToByteEncoder<BRpcRequest> {
         byteBuf.writeLong(bRpcRequest.getRequestId());
         //判断是否是心跳请求
         // body(requestPayload)
-        byte[] body = getBodyBytes(bRpcRequest.getRequestPayload());
+        // 根据配置的序列化方式进行序列化, 解耦合()
+        Serializer serializer = SerializerFactory.getSerializer(BRpcBootStrap.SERIALIZE_TYPE).getSerializer();
+        if (serializer == null) {
+            throw new SerializerException();
+        }
+        byte[] body = serializer.serialize(bRpcRequest.getRequestPayload());
+        // 根据配置的压缩方式进行压缩
         if (body != null){
             byteBuf.writeBytes(body);
         }
@@ -60,21 +65,4 @@ public class BRpcRequestEncoder extends MessageToByteEncoder<BRpcRequest> {
         }
     }
 
-    private byte[] getBodyBytes(RequestPayload requestPayload) {
-        // todo: 针对不同的消息类型需要做不同的处理，如心跳的请求
-        if (requestPayload == null) {
-            return null;
-        }
-        try {
-            //序列化
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ObjectOutputStream outputStream = new ObjectOutputStream(baos);
-            outputStream.writeObject(requestPayload);
-            //压缩
-            return baos.toByteArray();
-        } catch (IOException e) {
-            log.error("序列化时出现异常");
-            throw new RuntimeException(e);
-        }
-    }
 }
