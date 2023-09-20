@@ -39,8 +39,8 @@ public class BRpcResponseEncoder extends MessageToByteEncoder<BRpcResponse> {
         // full length
         byteBuf.writerIndex(byteBuf.writerIndex() + MessageFormatConstant.FULL_FILED_LENGTH);
         byteBuf.writeByte(bRpcResponse.getCode());
-        byteBuf.writeByte(bRpcResponse.getCompressType());
         byteBuf.writeByte(bRpcResponse.getSerializeType());
+        byteBuf.writeByte(bRpcResponse.getCompressType());
         byteBuf.writeLong(bRpcResponse.getRequestId());
         //如果是心跳请求，ping pong
         // body(object) 对响应做序列化

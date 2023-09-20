@@ -36,8 +36,8 @@ public class BRpcRequestEncoder extends MessageToByteEncoder<BRpcRequest> {
         // full length
         byteBuf.writerIndex(byteBuf.writerIndex() + MessageFormatConstant.FULL_FILED_LENGTH);
         byteBuf.writeByte(bRpcRequest.getRequestType());
-        byteBuf.writeByte(bRpcRequest.getCompressType());
         byteBuf.writeByte(bRpcRequest.getSerializeType());
+        byteBuf.writeByte(bRpcRequest.getCompressType());
         byteBuf.writeLong(bRpcRequest.getRequestId());
         //判断是否是心跳请求
         // body(requestPayload)

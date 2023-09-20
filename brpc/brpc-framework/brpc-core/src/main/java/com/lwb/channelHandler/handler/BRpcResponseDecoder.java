@@ -88,8 +88,8 @@ public class BRpcResponseDecoder extends LengthFieldBasedFrameDecoder {
         //封装
         BRpcResponse bRpcResponse = new BRpcResponse();
         bRpcResponse.setCode(responseCode);
-        bRpcResponse.setCompressType(compressType);
         bRpcResponse.setSerializeType(serializeType);
+        bRpcResponse.setCompressType(compressType);
         bRpcResponse.setRequestId(requestId);
 
         //todo:如果是心跳请求，直接返回
