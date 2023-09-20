@@ -6,6 +6,7 @@ import com.lwb.channelHandler.handler.BRpcResponseEncoder;
 import com.lwb.channelHandler.handler.MethodCallHandler;
 import com.lwb.discovery.Registry;
 import com.lwb.discovery.RegistryConfig;
+import com.lwb.utils.IdGenerator;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -30,6 +31,7 @@ public class BRpcBootStrap {
     private RegistryConfig registryConfig;
     private ProtocolConfig protocolConfig;
     private int port = 9088;
+    public static final IdGenerator ID_GENERATOR = new IdGenerator(1, 2);
     //注册中心
     private Registry registry;
 

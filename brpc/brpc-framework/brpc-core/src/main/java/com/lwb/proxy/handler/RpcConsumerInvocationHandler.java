@@ -8,6 +8,7 @@ import com.lwb.exceptions.DiscoveryException;
 import com.lwb.exceptions.NetWorkException;
 import com.lwb.transport.message.BRpcRequest;
 import com.lwb.transport.message.RequestPayload;
+import com.lwb.utils.IdGenerator;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
@@ -73,7 +74,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
 
         //todo:后续对请求id和类型做处理
         BRpcRequest bRpcRequest = BRpcRequest.builder()
-                .requestId(1L)
+                .requestId(BRpcBootStrap.ID_GENERATOR.getId())
                 .compressType((byte) 1)
                 .requestType(RequestType.REQUEST.getId())
                 .serializeType((byte) 1)

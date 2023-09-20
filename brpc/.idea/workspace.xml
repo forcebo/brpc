@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0375fdcc-9a7f-4793-91da-299c154a993f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/MethodCallHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/MethodCallHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/BRpcBootStrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/BRpcBootStrap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/proxy/handler/RpcConsumerInvocationHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/proxy/handler/RpcConsumerInvocationHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,9 +78,9 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.ConsumerApplication">
-    <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lwb.Application" />
-      <module name="brpc-manager" />
+    <configuration name="ConsumerApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lwb.ConsumerApplication" />
+      <module name="brpc-consumer-demo" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.lwb.discovery.*" />
@@ -90,12 +91,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ConsumerApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lwb.ConsumerApplication" />
-      <module name="brpc-consumer-demo" />
+    <configuration name="IdGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lwb.utils.IdGenerator" />
+      <module name="brpc-common" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lwb.discovery.*" />
+          <option name="PATTERN" value="com.lwb.utils.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -156,6 +157,7 @@
       <list>
         <item itemvalue="Application.ConsumerApplication" />
         <item itemvalue="Application.ProviderApplication" />
+        <item itemvalue="Application.IdGenerator" />
         <item itemvalue="Application.MyCompletableFuture" />
         <item itemvalue="Application.NetUtil" />
       </list>
@@ -179,7 +181,7 @@
       <workItem from="1694436445333" duration="850000" />
       <workItem from="1694524725961" duration="5197000" />
       <workItem from="1695004817205" duration="19498000" />
-      <workItem from="1695183253453" duration="603000" />
+      <workItem from="1695183253453" duration="10412000" />
     </task>
     <servers />
   </component>
@@ -208,16 +210,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/BRpcResponseEncoder.java</url>
-          <line>33</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
