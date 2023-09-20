@@ -2,7 +2,9 @@ package com.lwb.channelHandler.handler;
 
 import com.lwb.BRpcBootStrap;
 import com.lwb.ServiceConfig;
+import com.lwb.enumeration.RespCode;
 import com.lwb.transport.message.BRpcRequest;
+import com.lwb.transport.message.BRpcResponse;
 import com.lwb.transport.message.RequestPayload;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -18,14 +20,19 @@ public class MethodCallHandler extends SimpleChannelInboundHandler<BRpcRequest> 
         //获取负载内容
         RequestPayload requestPayload = bRpcRequest.getRequestPayload();
         //根据负载内容进行方法调用
-        Object object = callTargetMethod(requestPayload);
+        Object result = callTargetMethod(requestPayload);
         if (log.isDebugEnabled()) {
             log.debug("请求【{}】已经在服务端完成方法调用。",bRpcRequest.getRequestId());
         }
         //封装响应
-
+        BRpcResponse bRpcResponse = new BRpcResponse();
+        bRpcResponse.setCode(RespCode.SUCCESS.getCode());
+        bRpcResponse.setRequestId(bRpcRequest.getRequestId());
+        bRpcResponse.setCompressType(bRpcRequest.getCompressType());
+        bRpcResponse.setSerializeType(bRpcRequest.getSerializeType());
+        bRpcResponse.setBody(result);
         //写出响应
-        channelHandlerContext.channel().writeAndFlush(object);
+        channelHandlerContext.channel().writeAndFlush(bRpcResponse);
     }
 
     private Object callTargetMethod(RequestPayload requestPayload) {

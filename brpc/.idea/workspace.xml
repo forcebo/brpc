@@ -5,12 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0375fdcc-9a7f-4793-91da-299c154a993f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/BRpcBootStrap.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/BRpcBootStrap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/ConsumerChannelInitializer.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/ConsumerChannelInitializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/BRpcMessageDecoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/BRpcRequestDecoder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/BRpcMessageEncoder.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/BRpcRequestEncoder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/MethodCallHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/MethodCallHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/MySimpleChannelInboundHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/MySimpleChannelInboundHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +178,8 @@
       <workItem from="1694421922194" duration="7914000" />
       <workItem from="1694436445333" duration="850000" />
       <workItem from="1694524725961" duration="5197000" />
-      <workItem from="1695004817205" duration="18906000" />
+      <workItem from="1695004817205" duration="19498000" />
+      <workItem from="1695183253453" duration="603000" />
     </task>
     <servers />
   </component>
@@ -211,5 +208,16 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/brpc-framework/brpc-core/src/main/java/com/lwb/channelHandler/handler/BRpcResponseEncoder.java</url>
+          <line>33</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
