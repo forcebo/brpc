@@ -1,5 +1,7 @@
 package com.lwb.channelHandler.handler;
 
+import com.lwb.compress.Compressor;
+import com.lwb.compress.CompressorFactory;
 import com.lwb.serialize.Serializer;
 import com.lwb.serialize.SerializerFactory;
 import com.lwb.transport.message.BRpcRequest;
@@ -46,7 +48,9 @@ public class BRpcResponseEncoder extends MessageToByteEncoder<BRpcResponse> {
         // body(object) 对响应做序列化
         Serializer serializer = SerializerFactory.getSerializer(bRpcResponse.getSerializeType()).getSerializer();
         byte[] body = serializer.serialize(bRpcResponse.getBody());
-        //todo 压缩
+        // 压缩
+        Compressor compressor = CompressorFactory.getCompressor(bRpcResponse.getCompressType()).getCompressor();
+        body = compressor.compress(body);
         if (body != null){
             byteBuf.writeBytes(body);
         }

@@ -3,9 +3,11 @@ package com.lwb.serialize;
 import com.lwb.serialize.impl.HessianSerializer;
 import com.lwb.serialize.impl.JDKSerializer;
 import com.lwb.serialize.impl.JsonSerializer;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j
 public class SerializerFactory {
     private final static ConcurrentHashMap<String, SerializerWrapper> SERIALIZER_CACHE = new ConcurrentHashMap<>(8);
     private final static ConcurrentHashMap<Byte, SerializerWrapper> SERIALIZER_CACHE_CODE = new ConcurrentHashMap<>(8);
@@ -28,10 +30,24 @@ public class SerializerFactory {
      * @return
      */
     public static SerializerWrapper getSerializer(String serializeType) {
-        return SERIALIZER_CACHE.get(serializeType.toLowerCase());
+        SerializerWrapper serializerWrapper = SERIALIZER_CACHE.get(serializeType.toLowerCase());
+        if (serializerWrapper == null) {
+            if (log.isDebugEnabled()){
+                log.error("未找到您配置的【{}】序列化方式，默认使用jdk的序列化方式", serializeType);
+            }
+            return SERIALIZER_CACHE.get("jdk");
+        }
+        return serializerWrapper;
     }
 
     public static SerializerWrapper getSerializer(byte serializeCode) {
-        return SERIALIZER_CACHE_CODE.get(serializeCode);
+        SerializerWrapper serializerWrapper = SERIALIZER_CACHE_CODE.get(serializeCode);
+        if (serializerWrapper == null) {
+            if (log.isDebugEnabled()){
+                log.error("未找到您配置序号为【{}】序列化方式", serializeCode);
+            }
+            return SERIALIZER_CACHE.get("jdk");
+        }
+        return serializerWrapper;
     }
 }

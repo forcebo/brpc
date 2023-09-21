@@ -1,6 +1,7 @@
 package com.lwb.proxy.handler;
 
 import com.lwb.BRpcBootStrap;
+import com.lwb.compress.CompressorFactory;
 import com.lwb.discovery.NettyBootStrapInitializer;
 import com.lwb.discovery.Registry;
 import com.lwb.enumeration.RequestType;
@@ -77,7 +78,7 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         //todo:后续对请求id和类型做处理
         BRpcRequest bRpcRequest = BRpcRequest.builder()
                 .requestId(BRpcBootStrap.ID_GENERATOR.getId())
-                .compressType((byte) 1)
+                .compressType(CompressorFactory.getCompressor(BRpcBootStrap.COMPRESS_TYPE).getCode())
                 .requestType(RequestType.REQUEST.getId())
                 .serializeType(SerializerFactory.getSerializer(BRpcBootStrap.SERIALIZE_TYPE).getCode())
                 .requestPayload(requestPayload)

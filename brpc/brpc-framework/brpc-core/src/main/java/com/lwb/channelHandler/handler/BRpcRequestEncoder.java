@@ -1,6 +1,8 @@
 package com.lwb.channelHandler.handler;
 
 import com.lwb.BRpcBootStrap;
+import com.lwb.compress.Compressor;
+import com.lwb.compress.CompressorFactory;
 import com.lwb.exceptions.SerializerException;
 import com.lwb.serialize.Serializer;
 import com.lwb.serialize.SerializerFactory;
@@ -42,12 +44,15 @@ public class BRpcRequestEncoder extends MessageToByteEncoder<BRpcRequest> {
         //判断是否是心跳请求
         // body(requestPayload)
         // 根据配置的序列化方式进行序列化, 解耦合()
-        Serializer serializer = SerializerFactory.getSerializer(BRpcBootStrap.SERIALIZE_TYPE).getSerializer();
+        Serializer serializer = SerializerFactory.getSerializer(bRpcRequest.getSerializeType()).getSerializer();
         if (serializer == null) {
             throw new SerializerException();
         }
         byte[] body = serializer.serialize(bRpcRequest.getRequestPayload());
         // 根据配置的压缩方式进行压缩
+        Compressor compressor = CompressorFactory.getCompressor(bRpcRequest.getCompressType()).getCompressor();
+        body = compressor.compress(body);
+
         if (body != null){
             byteBuf.writeBytes(body);
         }

@@ -1,6 +1,8 @@
 package com.lwb.channelHandler.handler;
 
 import com.lwb.BRpcBootStrap;
+import com.lwb.compress.Compressor;
+import com.lwb.compress.CompressorFactory;
 import com.lwb.enumeration.RequestType;
 import com.lwb.serialize.Serializer;
 import com.lwb.serialize.SerializerFactory;
@@ -100,8 +102,9 @@ public class BRpcRequestDecoder extends LengthFieldBasedFrameDecoder {
         byte[] payload = new byte[payloadLength];
         byteBuf.readBytes(payload);
 
-        // todo: 解压缩
-
+        //解压缩
+        Compressor compressor = CompressorFactory.getCompressor(compressType).getCompressor();
+        payload = compressor.decompress(payload);
         // 反序列化
         Serializer serializer = SerializerFactory.getSerializer(serializeType).getSerializer();
         RequestPayload requestPayload = serializer.deserialize(payload, RequestPayload.class);
