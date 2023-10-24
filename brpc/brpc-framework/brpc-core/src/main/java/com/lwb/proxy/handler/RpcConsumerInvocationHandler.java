@@ -53,7 +53,9 @@ public class RpcConsumerInvocationHandler implements InvocationHandler {
         //1.传入服务的名字，获取服务提供方地址
         // todo q:每次调用相关方法的时候都需要去注册中心拉取服务列表吗？ 本地缓存 + watcher
         //  我们如何合理的选择一个可用的服务，而不是只获取第一个  负载均衡
-        InetSocketAddress address = registry.lookup(interfaceRef.getName());
+        // 获取当前配置的负载均衡器，选取一个可用节点
+        InetSocketAddress address = BRpcBootStrap.LOAD_BALANCER.selectServiceAddress(interfaceRef.getName());
+
         if (log.isDebugEnabled()) {
             log.debug("服务调用方，返回了服务[{}]的可用主机[{}]", interfaceRef.getName(), address);
         }

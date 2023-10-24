@@ -4,6 +4,7 @@ import com.lwb.ServiceConfig;
 import com.lwb.discovery.AbstractRegistry;
 
 import java.net.InetSocketAddress;
+import java.util.List;
 
 public class NacosRegistry extends AbstractRegistry {
 
@@ -20,7 +21,7 @@ public class NacosRegistry extends AbstractRegistry {
     }
 
     @Override
-    public InetSocketAddress lookup(String name) {
+    public List<InetSocketAddress> lookup(String name) {
         return null;
     }
 }

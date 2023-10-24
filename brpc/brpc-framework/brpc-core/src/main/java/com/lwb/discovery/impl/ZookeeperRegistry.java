@@ -1,5 +1,6 @@
 package com.lwb.discovery.impl;
 
+import com.lwb.BRpcBootStrap;
 import com.lwb.Constant;
 import com.lwb.ServiceConfig;
 import com.lwb.discovery.AbstractRegistry;
@@ -41,7 +42,7 @@ public class ZookeeperRegistry extends AbstractRegistry {
         // 服务提供方的端口一般自己设定， 还需要一个获取ip的方法
         // ip 我们通常是需要一个局域网ip， 而不是127.0.0.1，也不是ipv6
         // todo: 后续处理端口
-        String node = parentNode + "/" + NetUtil.getIp() + ":" + 9088;
+        String node = parentNode + "/" + NetUtil.getIp() + ":" + BRpcBootStrap.PORT;
         if(!ZookeeperUtil.exists(zooKeeper, node, null)) {
             ZookeeperNode zookeeperNode = new ZookeeperNode(node, null);
             ZookeeperUtil.createNode(zooKeeper, zookeeperNode, null, CreateMode.EPHEMERAL);
@@ -51,8 +52,13 @@ public class ZookeeperRegistry extends AbstractRegistry {
         }
     }
 
+    /**
+     *  拉取合适的服务列表
+     * @param serviceName 服务的名称
+     * @return 服务列表
+     */
     @Override
-    public InetSocketAddress lookup(String serviceName) {
+    public List<InetSocketAddress> lookup(String serviceName) {
         // 1.找到服务对应的节点
         String serviceNode = Constant.BASE_PROVIDERS_PATH + "/" + serviceName;
 
@@ -69,6 +75,6 @@ public class ZookeeperRegistry extends AbstractRegistry {
         if(inetSocketAddresses == null || inetSocketAddresses.size() == 0) {
             throw new NetWorkException("未发现任何可用的服务主机！");
         }
-        return inetSocketAddresses.get(0);
+        return inetSocketAddresses;
     }
 }

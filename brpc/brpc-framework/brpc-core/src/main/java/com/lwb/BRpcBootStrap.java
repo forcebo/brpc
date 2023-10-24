@@ -6,6 +6,8 @@ import com.lwb.channelHandler.handler.BRpcResponseEncoder;
 import com.lwb.channelHandler.handler.MethodCallHandler;
 import com.lwb.discovery.Registry;
 import com.lwb.discovery.RegistryConfig;
+import com.lwb.loadbalancer.LoadBalancer;
+import com.lwb.loadbalancer.impl.RoundRobinLoadBalancer;
 import com.lwb.utils.IdGenerator;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -25,17 +27,18 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 public class BRpcBootStrap {
 
+    public static final int PORT = 9090;
     private static final BRpcBootStrap bRpcBootStrap = new BRpcBootStrap();
 
     private String appName = "default";
     private RegistryConfig registryConfig;
     private ProtocolConfig protocolConfig;
-    private int port = 9088;
     public static final IdGenerator ID_GENERATOR = new IdGenerator(1, 2);
     public static String SERIALIZE_TYPE = "jdk";
     public static String COMPRESS_TYPE = "gzip";
     //注册中心
     private Registry registry;
+    public static LoadBalancer LOAD_BALANCER;
 
     //netty连接的缓存
     public final static Map<InetSocketAddress, Channel> CHANNEL_CACHE = new ConcurrentHashMap<>(16);
@@ -73,6 +76,9 @@ public class BRpcBootStrap {
      */
     public BRpcBootStrap registry(RegistryConfig registryConfig) {
         this.registry = registryConfig.getRegistry();
+
+        // todo: 需要修改
+        BRpcBootStrap.LOAD_BALANCER = new RoundRobinLoadBalancer();
         return this;
     }
 
@@ -141,7 +147,7 @@ public class BRpcBootStrap {
                         }
                     });
             //4.绑定端口
-            ChannelFuture channelFuture = serverBootstrap.bind(port).sync();
+            ChannelFuture channelFuture = serverBootstrap.bind(PORT).sync();
             //5.优雅关闭
             channelFuture.channel().closeFuture().sync();
         }catch (InterruptedException e) {
@@ -181,5 +187,9 @@ public class BRpcBootStrap {
             log.debug("我们配置了使用压缩算法为【{}】", compressType);
         }
         return this;
+    }
+
+    public Registry getRegistry() {
+        return registry;
     }
 }
